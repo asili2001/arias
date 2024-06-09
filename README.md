@@ -2,6 +2,8 @@ Arias
 
 > A collection of versatile utility functions for JavaScript and TypeScript.
 
+![Coverage](https://github.com/asili2001/arias/tree/main/coverage/badge.svg)
+
 **What is arias?**
 
 `arias` is a versatile and powerful library for JavaScript and TypeScript that provides a collection of useful utility functions. This library aims to simplify common tasks such as date range checks, object property access, filtering, and sorting.
@@ -16,7 +18,7 @@ npm install arias
 
 ## Documentation
 
-Documentation about the functions in `arias` found in [HERE](https://#)
+Documentation about the functions in `arias` found in [HERE](https://asili2001.github.io/arias/#/)
 
 ## Continuous Improvement
 
