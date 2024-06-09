@@ -1,9 +1,2 @@
-import { checkDateInRange, genericFilter, gatherValuesByPath, filterObjectsByPath, dynamicSort } from "./genericFilter";
-
-export {
-    checkDateInRange,
-    genericFilter,
-    gatherValuesByPath,
-    filterObjectsByPath,
-    dynamicSort
-};
+export {genericFilter, chunkArray} from "./arrayUtils";
+export {gatherValuesByPath, filterObjectsByPath, deepClone, deepMerge, isObject} from "./objectUtils";

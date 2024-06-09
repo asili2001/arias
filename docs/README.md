@@ -1,6 +1,7 @@
-Arias
+# Arias
 
 > A collection of versatile utility functions for JavaScript and TypeScript.
+![Coverage](../coverage/badges.svg)
 
 **What is arias?**
 
@@ -13,10 +14,6 @@ You can install the library via npm:
 ````bash
 npm install arias
 ````
-
-## Documentation
-
-Documentation about the functions in `arias` found in [HERE](https://#)
 
 ## Continuous Improvement
 
