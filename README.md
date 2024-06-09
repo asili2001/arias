@@ -2,7 +2,7 @@ Arias
 
 > A collection of versatile utility functions for JavaScript and TypeScript.
 
-![Coverage](https://github.com/asili2001/arias/tree/main/coverage/badge.svg)
+![Coverage](https://raw.githubusercontent.com/asili2001/arias/main/coverage/badge.svg)
 
 **What is arias?**
 
