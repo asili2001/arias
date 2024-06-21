@@ -1,3 +1,5 @@
+import { DeepArray, DynamicObject } from "./types/General";
+
 /**
  * Gathers values from a given object or array of objects based on a specified path.
  * 

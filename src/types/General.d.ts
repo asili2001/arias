@@ -1,2 +1,2 @@
-type DynamicObject = { [key: string]: any };
-type DeepArray<T> = T | DeepArray<T>[];
+export type DynamicObject = { [key: string]: any };
+export type DeepArray<T> = T | DeepArray<T>[];

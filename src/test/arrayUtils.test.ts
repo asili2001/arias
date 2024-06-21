@@ -1,4 +1,5 @@
 import { chunkArray, genericFilter } from "../arrayUtils";
+import { Filter } from "../types/Filter";
 
 const genericFilterNumberRangeTests = [
     {
