@@ -3,3 +3,7 @@ export {gatherValuesByPath, filterObjectsByPath, deepClone, deepMerge, isObject}
 export {checkDateInRange, isDateString} from "./dateUtils";
 export {stringToColor, generateUUID} from "./randomUtils";
 export {debounce, throttle, sleep} from "./functionUtils";
+
+
+export { Filter } from "./types/Filter";
+export { DynamicObject, DeepArray } from "./types/General";
