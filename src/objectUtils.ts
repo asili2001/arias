@@ -1,4 +1,4 @@
-import { DeepArray, DynamicObject } from "./types/General";
+import { DeepArray, DynamicObject } from ".";
 
 /**
  * Gathers values from a given object or array of objects based on a specified path.

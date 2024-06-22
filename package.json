@@ -1,13 +1,13 @@
 {
   "name": "arias",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "cov": "jest --coverage",
-    "build": "tsc",
+    "build": "tsc && cp -r src/types dist/types",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "docz:serve": "docz build && docz serve"

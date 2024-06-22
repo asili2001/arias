@@ -1,7 +1,7 @@
 import { checkDateInRange, isDateString } from "./dateUtils";
 import { gatherValuesByPath } from "./objectUtils";
-import { Filter } from "./types/Filter";
-import { DynamicObject } from "./types/General";
+import { Filter } from ".";
+import { DynamicObject } from ".";
 
 /**
  * Filters an array of objects based on an array of filters.
