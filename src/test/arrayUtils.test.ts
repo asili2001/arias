@@ -22,6 +22,53 @@ const genericFilterNumberRangeTests = [
         ]
     },
     {
+        description: "Filter objects by range. sum all values in array of objects",
+        data: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 }
+                ]
+            },
+            {
+                age: 30,
+                grades: [
+                    { grade: 10 },
+                    { grade: 50 },
+                    { grade: 30 }
+                ]
+            },
+            {
+                age: 45,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 100 }
+                ]
+            }
+        ],
+        filters: [
+            {
+                path: ["grades.grade"],
+                operation: "+",
+                type: "numberRange",
+                value: [30, 60]
+            }
+        ],
+        expected: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 }
+                ]
+            }
+        ]
+    },
+    {
         description: "Filter objects by range, no match",
         data: [
             { age: 50 },
@@ -81,20 +128,44 @@ const genericFilterMultiSelectTests = [
     {
         description: "Filter objects by multi select",
         data: [
-            { department: "IT" },
-            { department: "HR" },
-            { department: "Finance" }
+            {
+                department: "IT",
+                device: {
+                    type: "laptop"
+                }
+            },
+            {
+                department: "HR",
+                device: {
+                    type: "desktop"
+                }
+            },
+            {
+                department: "Finance",
+                device: {
+                    type: "unknown"
+                }
+            }
         ],
         filters: [
             {
                 path: ["department"],
                 type: "multiSelect",
                 value: ["HR", "Finance"]
+            },
+            {
+                path: ["device.type"],
+                type: "multiSelect",
+                value: ["desktop", "laptop"]
             }
         ],
         expected: [
-            { department: "HR" },
-            { department: "Finance" }
+            {
+                department: "HR",
+                device: {
+                    type: "desktop"
+                }
+            }
         ]
     },
     {
@@ -240,7 +311,7 @@ const genericFilterDateInRangeTests = [
             { startDate: "2021-01-01" }
         ]
     }
-    
+
 ];
 
 const chunkArrayTests = [
@@ -286,7 +357,7 @@ describe("genericFilter", () => {
     genericFilterDateRangeInRangeTests.forEach(testScript => {
         const { description, data, filters, expected, consoleError } = testScript;
         test(description, () => {
-            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
             const result = genericFilter(data, filters as Filter[]);
             expect(result).toEqual(expected);
 
@@ -299,13 +370,13 @@ describe("genericFilter", () => {
     genericFilterDateInRangeTests.forEach(testScript => {
         const { description, data, filters, expected, consoleError } = testScript;
         test(description, () => {
-            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
             const result = genericFilter(data, filters as Filter[]);
             expect(result).toEqual(expected);
-        
+
             if (consoleError) {
-            expect(consoleErrorSpy).toHaveBeenCalledWith(consoleError);
-        }
+                expect(consoleErrorSpy).toHaveBeenCalledWith(consoleError);
+            }
         });
 
     });

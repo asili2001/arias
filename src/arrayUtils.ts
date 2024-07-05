@@ -2,6 +2,7 @@ import { checkDateInRange, isDateString } from "./dateUtils";
 import { gatherValuesByPath } from "./objectUtils";
 import { Filter } from ".";
 import { DynamicObject } from ".";
+import { Operation } from "./types/Filter";
 
 /**
  * Filters an array of objects based on an array of filters.
@@ -11,13 +12,36 @@ import { DynamicObject } from ".";
  * @returns {T[]} - The filtered array.
  */
 export const genericFilter = <T>(arr: T[], filters: Filter[]): T[] => {
+
+    const applyOperation = (values: number[], operation: Operation) => {
+        switch (operation) {
+            case "+":
+                return values.reduce((acc, val) => acc + val, 0);
+            case "-":
+                return values.reduce((acc, val) => acc - val);
+            case "*":
+                return values.reduce((acc, val) => acc * val, 1);
+            case "/":
+                return values.reduce((acc, val, index) => index === 0 ? val : acc / val);
+            default:
+                return values[0];
+        }
+    };
+
+
     return filters.reduce((filteredData, filter) => {
         switch (filter.type) {
             case "numberRange":
                 return filteredData.filter(item => {
-                    const value = gatherValuesByPath(item as DynamicObject, filter.path[0], false)[0] as number;
-                    return value !== undefined && value >= filter.value[0] && value <= filter.value[1];
+                    const values = gatherValuesByPath(item as DynamicObject, filter.path[0], true) as number[];
+                    if (values === undefined || values.length === 0) return false;
+
+                    filter.operation = filter.operation || "none";
+
+                    const result = applyOperation(values, filter.operation);
+                    return result >= filter.value[0] && result <= filter.value[1];
                 });
+
 
             case "singleSelect":
                 return filteredData.filter(item => {
@@ -27,8 +51,8 @@ export const genericFilter = <T>(arr: T[], filters: Filter[]): T[] => {
 
             case "multiSelect":
                 return filteredData.filter(item => {
-                    const value = gatherValuesByPath(item as DynamicObject, filter.path[0], false)[0] as string | number;
-                    return value !== undefined && filter.value.includes(value);
+                    const values = gatherValuesByPath(item as DynamicObject, filter.path[0], false) as unknown[];
+                    return values !== undefined && values.some(value => filter.value.includes(value));
                 });
 
             case "dateRangeInRange":

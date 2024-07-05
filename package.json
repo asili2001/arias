@@ -7,10 +7,7 @@
   "scripts": {
     "test": "jest",
     "cov": "jest --coverage",
-    "build": "tsc && cp -r src/types dist/types",
-    "docz:dev": "docz dev",
-    "docz:build": "docz build",
-    "docz:serve": "docz build && docz serve"
+    "build": "tsc && cp -r src/types dist/types"
   },
   "author": "Ahmad Asili",
   "license": "MIT",

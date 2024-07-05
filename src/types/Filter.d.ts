@@ -1,5 +1,8 @@
+export type Operation = "+" | "-" | "*" | "/" | "none";
+
 export type Filter = {
     path: string[],
     type: "singleSelect" | "multiSelect" | "dateRange" | "date" | "numberRange" | "dateRangeInRange" | "dateInRange",
-    value: any
+    value: any,
+    operation?: Operation
 }

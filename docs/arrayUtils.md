@@ -41,6 +41,64 @@ const filteredData = genericFilter(data, filters);
 // filteredData: [{ id: 1, age: 25 }, { id: 2, age: 30 }]
 ````
 
+##### Using operations
+
+Operations allow you to sum, subtract, divide, or multiply values in an array before applying the filtering process. This means the filter operates on the result of the operation rather than on individual values.
+
+In the example below, we use the addition (`+`) operation to sum up the total grades for each user and then filter the results to include only those with total grades between 30 and 60.
+
+````typescript
+const data = [
+    {
+        age: 50,
+        grades: [
+            { grade: 10 },
+            { grade: 20 },
+            { grade: 30 }
+        ]
+    },
+    {
+        age: 30,
+        grades: [
+            { grade: 10 },
+            { grade: 50 },
+            { grade: 30 }
+        ]
+    },
+    {
+        age: 45,
+        grades: [
+            { grade: 10 },
+            { grade: 20 },
+            { grade: 100 }
+        ]
+    }
+];
+
+const filters = [
+    {
+        path: ["grades.grade"],
+        operation: "+",
+        type: "numberRange",
+        value: [30, 60]
+    }
+];
+
+const filteredData = genericFilter(data, filters);
+
+
+// filteredData: [
+// {
+//     age: 50,
+//         grades: [
+//             { grade: 10 },
+//             { grade: 20 },
+//             { grade: 30 }
+//         ]
+// }
+// ]
+````
+
 #### Filtering by Single Select
 
 ````typescript
