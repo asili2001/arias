@@ -37,7 +37,7 @@ export const gatherValuesByPath = <T extends DynamicObject>(obj: T | T[], path: 
 
     recursiveCollect(obj, keys);
     if (unique) {
-        return [...new Set(result)];
+        return [...new Set(result.flat())];
     }
 
     return result;
