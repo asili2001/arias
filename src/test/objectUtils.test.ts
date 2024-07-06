@@ -27,9 +27,9 @@ const gatherValuesByPathTests = [
     },
     {
         description: "Multi-level path including specific object in array",
-        obj: { department: { manager: [{ name: "John" }] } },
+        obj: { department: { manager: [{ name: "John" }, { name: "Doe" }] } },
         path: "department.manager",
-        expected: [[{ name: "John" }]]
+        expected: [[{ name: "John" }, { name: "Doe" }]]
     },
     {
         description: "Path not found",
