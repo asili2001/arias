@@ -32,6 +32,13 @@ const gatherValuesByPathTests = [
         expected: [{ name: "John" }, { name: "Doe" }]
     },
     {
+        description: "Multi-level path including specific object in array, unique",
+        obj: { department: { manager: [{ name: "John" }, { name: "John" }] } },
+        path: "department.manager",
+        unique: true,
+        expected: [{ name: "John" }]
+    },
+    {
         description: "Path not found",
         obj: { department: { manager: "John" } },
         path: "department.director",
@@ -151,9 +158,9 @@ const isObjectTests = [
 
 describe("gatherValuesByPath", () => {
     gatherValuesByPathTests.forEach(testScript => {
-        const { description, obj, path, expected } = testScript;
+        const { description, obj, path, expected, unique } = testScript;
         test(description, () => {
-            const result = gatherValuesByPath(obj, path);
+            const result = gatherValuesByPath(obj, path, unique && true);
             expect(result).toMatchObject(expected);
         });
     });
