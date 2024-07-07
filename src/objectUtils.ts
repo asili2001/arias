@@ -15,6 +15,7 @@ export const gatherValuesByPath = <T extends DynamicObject>(obj: T | T[], path: 
 
     function recursiveCollect(obj: DynamicObject | DynamicObject[], keys: string[]) {
         if (keys.length === 0) {
+            // Push obj to result regardless of its content (including 0)
             result.push(obj);
             return;
         }
@@ -30,7 +31,7 @@ export const gatherValuesByPath = <T extends DynamicObject>(obj: T | T[], path: 
             } else {
                 obj.forEach((item) => recursiveCollect(item[key], [...keys]));
             }
-        } else if (obj[key]) {
+        } else if (obj[key] !== undefined) { // Ensure obj[key] is not undefined
             recursiveCollect(obj[key], keys);
         }
     }

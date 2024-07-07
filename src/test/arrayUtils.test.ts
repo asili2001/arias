@@ -6,18 +6,20 @@ const genericFilterNumberRangeTests = [
         description: "Filter objects by range",
         data: [
             { age: 50 },
-            { age: 30 },
+            { age: 0 },
+            { age: 80 },
             { age: 45 }
         ],
         filters: [
             {
                 path: ["age"],
                 type: "numberRange",
-                value: [40, 50]
+                value: [0, 50]
             }
         ],
         expected: [
             { age: 50 },
+            { age: 0 },
             { age: 45 },
         ]
     },

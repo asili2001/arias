@@ -34,13 +34,15 @@ export const genericFilter = <T>(arr: T[], filters: Filter[]): T[] => {
             case "numberRange":
                 return filteredData.filter(item => {
                     const values = gatherValuesByPath(item as DynamicObject, filter.path[0], true) as number[];
+
                     if (values === undefined || values.length === 0) return false;
-
+                
                     filter.operation = filter.operation || "none";
-
+                
                     const result = applyOperation(values, filter.operation);
-                    return result >= filter.value[0] && result <= filter.value[1];
-                });
+                    return result >= filter.value[0] && result <= filter.value[1] || values.length === 0;
+
+                });                
 
 
             case "singleSelect":
