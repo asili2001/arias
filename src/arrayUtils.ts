@@ -63,7 +63,7 @@ export const genericFilter = <T>(arr: T[], filters: Filter[]): T[] => {
                     const maxEndDate = gatherValuesByPath(item as DynamicObject, filter.path[1], false)[0] as string;
 
                     if (minStartDate && maxEndDate && isDateString(minStartDate) && isDateString(maxEndDate)) {
-                        return checkDateInRange([minStartDate, maxEndDate], filter.value[0], filter.value[1], true);
+                        return checkDateInRange([minStartDate, maxEndDate], filter.value[0], filter.value[1], filter.strict ? filter.strict : true);
                     } else {
                         console.error(`Invalid date format: ${minStartDate}, ${maxEndDate}`);
                         return false;
