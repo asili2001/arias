@@ -224,6 +224,27 @@ const genericFilterDateRangeInRangeTests = [
         expected: []
     },
     {
+        description: "Filter objects by date range in range, unstrict",
+        data: [
+            { startDate: "2020-01-01", endDate: "2023-01-01" },
+            { startDate: "2019-01-01", endDate: "2022-01-01" },
+            { startDate: "2021-01-01", endDate: "2024-01-01" }
+        ],
+        filters: [
+            {
+                path: ["startDate", "endDate"],
+                type: "dateRangeInRange",
+                value: ["2021-01-01", "2026-01-01"],
+                strict: false
+            }
+        ],
+        expected: [
+            { startDate: "2020-01-01", endDate: "2023-01-01" },
+            { startDate: "2019-01-01", endDate: "2022-01-01" },
+            { startDate: "2021-01-01", endDate: "2024-01-01" }
+        ]
+    },
+    {
         description: "Invalid date path",
         data: [
             { startDate: "2020-01-01", endDate: "2023-01-01" },
