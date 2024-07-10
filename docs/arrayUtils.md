@@ -154,6 +154,14 @@ const filteredData = genericFilter(data, filters);
 // filteredData: [{ id: 2, startDate: "2022-03-01", endDate: "2022-04-01" }]
 ````
 
+By default, `dateRangeInRange` operates in `strict` mode, requiring the date range to be strictly within the specified range. To disable strict mode, set the `strict` attribute to false in the filter object.
+
+````typescript
+const filters = [
+    { type: "dateRangeInRange", path: ["startDate", "endDate"], value: ["2022-02-01", "2022-05-01"], strict: false }
+];
+````
+
 #### Filtering By Single Date In a Daterange
 
 `````typescript
@@ -214,3 +222,44 @@ In this example, the input array `[1, 2, 3, 4, 5, 6, 7, 8, 9]` is split into chu
 
 * If the size of the array is not perfectly divisible by the chunk size, the last chunk will contain the remaining elements.
 * An error will be thrown if the specified size is not a positive number.
+
+## sortDataset
+
+The `sortDataset` function sorts an array of objects based on the type of the attribute specified (`sortBy`). It automatically detects whether the data is a number, string, or date, and sorts accordingly in ascending or descending order (`asc` or `desc`).
+
+### Purpose
+
+The purpose of `sortDataset` is to provide a flexible sorting mechanism for arrays of objects, accommodating different data types without requiring explicit type checking.
+
+### Function Signature
+
+````typescript
+/**
+ * Sorts an array of objects based on a specified attribute and order.
+ * Automatically detects if the attribute values are numbers, strings, or dates.
+ * 
+ * @param {T[]} dataset - The array of objects to be sorted.
+ * @param {SortBy} sortBy - An object specifying the attribute and order of sorting.
+ * @returns {T[]} - The sorted array of objects.
+ */
+export const sortDataset = <T>(dataset: T[], sortBy: SortBy): T[] => {...};
+
+````
+
+### Example
+
+```typescript
+import { sortDataset } from './utils';
+
+// Sample dataset of objects
+const dataset = [
+    { id: 1, name: 'John', age: 30 },
+    { id: 2, name: 'Jane', age: 25 },
+    { id: 3, name: 'Doe', age: 35 }
+];
+
+// Sort dataset by 'age' in ascending order
+const sortedDataset = sortDataset(dataset, { attribute: 'age', order: 'asc' });
+console.log(sortedDataset);
+// [{ id: 2, name: 'Jane', age: 25 }, { id: 1, name: 'John', age: 30 }, { id: 3, name: 'Doe', age: 35 }]
+```

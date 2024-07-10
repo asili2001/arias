@@ -1,5 +1,6 @@
-import { chunkArray, genericFilter } from "../arrayUtils";
+import { chunkArray, genericFilter, sortDataset } from "../arrayUtils";
 import { Filter } from "../.";
+import { SortBy } from "../types/Sort";
 
 const genericFilterNumberRangeTests = [
     {
@@ -71,6 +72,147 @@ const genericFilterNumberRangeTests = [
         ]
     },
     {
+        description: "Filter objects by range. multiply all values in array of objects",
+        data: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 } //6000
+                ]
+            },
+            {
+                age: 30,
+                grades: [
+                    { grade: 10 },
+                    { grade: 50 },
+                    { grade: 30 } //15000
+                ]
+            },
+            {
+                age: 45,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 100 } //20000
+                ]
+            }
+        ],
+        filters: [
+            {
+                path: ["grades.grade"],
+                operation: "*",
+                type: "numberRange",
+                value: [5000, 10000]
+            }
+        ],
+        expected: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 }
+                ]
+            }
+        ]
+    },
+    {
+        description: "Filter objects by range. devide all values in array of objects",
+        data: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 } //0.016
+                ]
+            },
+            {
+                age: 30,
+                grades: [
+                    { grade: 10 },
+                    { grade: 50 },
+                    { grade: 30 } //0,006
+                ]
+            },
+            {
+                age: 45,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 100 } // 0.005
+                ]
+            }
+        ],
+        filters: [
+            {
+                path: ["grades.grade"],
+                operation: "/",
+                type: "numberRange",
+                value: [0.01, 1]
+            }
+        ],
+        expected: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 }
+                ]
+            }
+        ]
+    },
+    {
+        description: "Filter objects by range. subtract all values in array of objects",
+        data: [
+            {
+                age: 50,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 30 } //-40
+                ]
+            },
+            {
+                age: 30,
+                grades: [
+                    { grade: 10 },
+                    { grade: 50 },
+                    { grade: 30 } //-70
+                ]
+            },
+            {
+                age: 45,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 100 } //-110
+                ]
+            }
+        ],
+        filters: [
+            {
+                path: ["grades.grade"],
+                operation: "-",
+                type: "numberRange",
+                value: [-200, -75]
+            }
+        ],
+        expected: [
+            {
+                age: 45,
+                grades: [
+                    { grade: 10 },
+                    { grade: 20 },
+                    { grade: 100 }
+                ]
+            }
+        ]
+    },
+    {
         description: "Filter objects by range, no match",
         data: [
             { age: 50 },
@@ -81,6 +223,23 @@ const genericFilterNumberRangeTests = [
         filters: [
             {
                 path: ["age"],
+                type: "numberRange",
+                value: [100, 200]
+            }
+        ],
+        expected: []
+    },
+    {
+        description: "Filter objects by range, undefined",
+        data: [
+            { age: 50 },
+            { age: 30 },
+            { age: 48 },
+            { age: 45 }
+        ],
+        filters: [
+            {
+                path: ["unefinedValue"],
                 type: "numberRange",
                 value: [100, 200]
             }
@@ -334,7 +493,6 @@ const genericFilterDateInRangeTests = [
             { startDate: "2021-01-01" }
         ]
     }
-
 ];
 
 const chunkArrayTests = [
@@ -350,6 +508,58 @@ const chunkArrayTests = [
         size: 2,
         expected: [[1, 2], [3, 4], [5, 6], [7, 8], [9]]
     }
+];
+
+const sortDatasetInitData = [{ name: "Alice", age: 30, birth: new Date("2020-01-01") },{ name: "Bob", age: 25, birth: new Date("2021-01-01") },{ name: "Charlie", age: 35, birth: new Date("2010-01-01")}]
+const sortDatasetTests = [
+    {
+        description: "sort number in ascending order",
+        data: sortDatasetInitData,
+        sortBy: {order: "asc", attribute: "age"},
+        expected: [sortDatasetInitData[1],sortDatasetInitData[0],sortDatasetInitData[2]]
+    },
+    {
+        description: "sort number in desc order",
+        data: sortDatasetInitData,
+        sortBy: {order: "desc", attribute: "age"},
+        expected: [sortDatasetInitData[2], sortDatasetInitData[0], sortDatasetInitData[1]]
+    },
+    {
+        description: "sort string in asc order",
+        data: sortDatasetInitData,
+        sortBy: {order: "asc", attribute: "name"},
+        expected: [sortDatasetInitData[0], sortDatasetInitData[1], sortDatasetInitData[2]]
+    },
+    {
+        description: "sort string in descending order",
+        data: sortDatasetInitData,
+        sortBy: {order: "desc", attribute: "name"},
+        expected: [sortDatasetInitData[2], sortDatasetInitData[1], sortDatasetInitData[0]]
+    },
+    {
+        description: "sort date in asc order",
+        data: sortDatasetInitData,
+        sortBy: {order: "asc", attribute: "birth"},
+        expected: [sortDatasetInitData[2], sortDatasetInitData[0], sortDatasetInitData[1]]
+    },
+    {
+        description: "sort date in desc order",
+        data: sortDatasetInitData,
+        sortBy: {order: "desc", attribute: "birth"},
+        expected: [sortDatasetInitData[1], sortDatasetInitData[0], sortDatasetInitData[2]]
+    },
+    {
+        description: "sort undefined in asc order",
+        data: sortDatasetInitData,
+        sortBy: {order: "asc", attribute: "undefinedVal"},
+        expected: [...sortDatasetInitData]
+    },
+    {
+        description: "sort date in desc order",
+        data: sortDatasetInitData,
+        sortBy: {order: "desc", attribute: "undefinedVal"},
+        expected: [...sortDatasetInitData]
+    },
 ];
 
 describe("genericFilter", () => {
@@ -418,3 +628,13 @@ describe("chunkArray", () => {
     });
     //  
 });
+
+describe("sortDataset", () => {
+    sortDatasetTests.forEach(testScript => {
+        const {description, data, sortBy, expected} = testScript;
+        test(description, () => {
+            const result = sortDataset(data, sortBy as SortBy);
+            expect(result).toEqual(expected);
+        })
+    })
+})

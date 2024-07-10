@@ -9,8 +9,12 @@ import { DeepArray, DynamicObject } from ".";
  * @param {boolean} [unique=true] - Whether to return only unique values.
  * @returns {unknown[]} - An array of values collected from the specified path.
  */
-export const gatherValuesByPath = <T extends DynamicObject>(obj: T | T[], path: string, unique: boolean = true): unknown[] => {
-    const keys = path.split(".");
+export const gatherValuesByPath = <T extends DynamicObject>(obj: T | T[], path?: string, unique: boolean = true): unknown[] => {
+    let keys: string[] = [];
+    if (path) {
+        keys = path.split(".");
+    }
+    
     const result: unknown[] = [];
 
     function recursiveCollect(obj: DynamicObject | DynamicObject[], keys: string[]) {

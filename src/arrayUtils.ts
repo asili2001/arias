@@ -3,6 +3,7 @@ import { gatherValuesByPath } from "./objectUtils";
 import { Filter } from ".";
 import { DynamicObject } from ".";
 import { Operation } from "./types/Filter";
+import { SortBy } from "./types/Sort";
 
 /**
  * Filters an array of objects based on an array of filters.
@@ -101,4 +102,72 @@ export const chunkArray = <T>(array: T[], size: number): T[][] => {
         result.push(array.slice(i, size + i));
     }
     return result;
+};
+
+/**
+ * Sorts an array of objects based on a specified attribute and order.
+ *
+ * @template T - The type of the objects within the dataset.
+ * @param {T[]} dataset - The array of objects to be sorted.
+ * @param {SortBy} sortBy - An object specifying the attribute to sort by and the order of sorting.
+ * @param {SortOrder} sortBy.order - The order in which to sort the dataset ("asc" for ascending or "desc" for descending).
+ * @param {string} sortBy.attribute - The attribute of the objects to sort by. This can be a nested attribute specified using dot notation.
+ * @returns {T[]} A new array containing the sorted objects.
+ *
+ * @example
+ * // Given the dataset:
+ * const dataset = [
+ *   { name: "Alice", age: 30 },
+ *   { name: "Bob", age: 25 },
+ *   { name: "Charlie", age: 35 }
+ * ];
+ *
+ * // To sort by age in ascending order:
+ * const sortedByAgeAsc = sortDataset(dataset, { order: "asc", attribute: "age" });
+ * console.log(sortedByAgeAsc);
+ * // Output: [
+ * //   { name: "Bob", age: 25 },
+ * //   { name: "Alice", age: 30 },
+ * //   { name: "Charlie", age: 35 }
+ * // ]
+ *
+ * // To sort by name in descending order:
+ * const sortedByNameDesc = sortDataset(dataset, { order: "desc", attribute: "name" });
+ * console.log(sortedByNameDesc);
+ * // Output: [
+ * //   { name: "Charlie", age: 35 },
+ * //   { name: "Bob", age: 25 },
+ * //   { name: "Alice", age: 30 }
+ * // ]
+ */
+export const sortDataset = <T>(dataset: T[], sortBy: SortBy): T[] => {
+    // Create a shallow copy of the dataset to avoid mutating the original array
+    return [...dataset].sort((a, b) => {
+        const { order, attribute } = sortBy;
+
+        // Extract attribute values from objects
+        const aValue = gatherValuesByPath(a as DynamicObject, attribute)[0];
+        const bValue = gatherValuesByPath(b as DynamicObject, attribute)[0];
+
+        // Compare values based on their types
+        if (typeof aValue === "string" && typeof bValue === "string") {
+            if (isDateString(aValue.split("T")[0]) && isDateString(bValue.split("T")[0])) {
+                // Date comparison for non-string, non-numeric values
+                
+                const dateA = new Date(String(aValue));
+                const dateB = new Date(String(bValue));
+                return order === "asc" ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+            }
+
+            // Case-insensitive string comparison using localeCompare
+            return order === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+        } else if (!isNaN(parseFloat(String(aValue))) && !isNaN(parseFloat(String(bValue)))) {
+            // Numeric comparison
+            const numA = parseFloat(String(aValue));
+            const numB = parseFloat(String(bValue));
+            return order === "asc" ? numA - numB : numB - numA;
+        } else {
+            return 0;
+        }
+    });
 };

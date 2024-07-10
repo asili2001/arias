@@ -1,6 +1,6 @@
 # Arias
 
-![Coverage](https://raw.githubusercontent.com/asili2001/arias/main/coverage/badge.svg)
+[![Coverage Status](https://img.shields.io/badge/coverage-95%25-brightgreen)](coverage/lcov-report)
 
 > A collection of versatile utility functions for JavaScript and TypeScript.
 

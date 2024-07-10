@@ -4,6 +4,7 @@ module.exports = {
     testEnvironment: 'node',
     testMatch: ["**/test/**/*.test.ts"],
     coverageReporters: [
-    "json-summary"
+    "json-summary",
+    'lcov'
   ]
 };
