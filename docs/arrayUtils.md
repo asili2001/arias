@@ -162,6 +162,16 @@ const filters = [
 ];
 ````
 
+
+By default, `dateRangeInRange` checks if the provided value date range fits within the data's date ranges. If you want to check if the data's date ranges fit within the provided value date range, you can set the `dataRangePrimary` attribute to true.
+
+```typescript
+const filters = [
+    { type: "dateRangeInRange", path: ["startDate", "endDate"], value: ["2022-02-01", "2022-05-01"], strict: false, dataPrimary: true }
+];
+```
+
+
 #### Filtering By Single Date In a Daterange
 
 `````typescript
