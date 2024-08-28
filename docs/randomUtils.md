@@ -18,7 +18,7 @@ This function generates a deterministic color based on the input string. The col
 
 ````typescript
 const color = stringToColor("hello");
-// color: "#d218e95a"
+// color: "#d218e9ff"
 ````
 
 In this example, the string "hello" is converted into a color code.

@@ -3,19 +3,35 @@ import { generateUUID, stringToColor } from "../randomUtils";
 const stringToColorTestCases = [
     {
         input: 'hello',
-        output: '#d218e95a',
+        opacity: 100,
+        darkness: 0,
+        output: '#d218e9ff',
     },
     {
         input: 'world',
-        output: '#921bc15a',
+        opacity: 100,
+        darkness: 0,
+        output: '#921bc1ff',
+    },
+    {
+        input: 'hello',
+        opacity: 50,
+        darkness: 0,
+        output: '#d218e980',
+    },
+    {
+        input: 'world',
+        opacity: 100,
+        darkness: 50,
+        output: '#490e61ff',
     },
 ];
 
 
 describe('stringToColor', () => {
-    stringToColorTestCases.forEach(({ input, output }) => {
+    stringToColorTestCases.forEach(({ input, output, opacity, darkness }) => {
         it(`should return ${output} for ${input}`, () => {
-            expect(stringToColor(input)).toBe(output);
+            expect(stringToColor(input, opacity, darkness)).toBe(output);
         });
     });
 });
