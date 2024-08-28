@@ -1,4 +1,4 @@
-export {genericFilter, chunkArray} from "./arrayUtils";
+export {genericFilter, chunkArray, sortDataset} from "./arrayUtils";
 export {gatherValuesByPath, filterObjectsByPath, deepClone, deepMerge, isObject} from "./objectUtils";
 export {checkDateInRange, isDateString} from "./dateUtils";
 export {stringToColor, generateUUID} from "./randomUtils";
